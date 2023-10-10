@@ -1,24 +1,42 @@
-import React from 'react';
+//import React from 'react';
 import { useState, useEffect } from 'react';
 import Exercises from './Exercises';
+import CurrentWorkout from './CurrentWorkout';
 import './App.css';
 
+function today() {
+  let date = new Date();
+  return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+}
+
+type Workout = { date: string, exercises: Sets[] };
+type Sets = { exercise: Exercise, values: number[] };
+type Exercise = { name: string, unit: string };
 
 function App() {
   const [selectedContent, setSelectedContent] = useState('Current Workout');
   const [exercises, setExercises_] = useState([{ name: "New Exercise", unit: "reps" }]);
+  const [workouts, setWorkouts_] = useState<Workout[]>([{ date: today(), exercises: [] }]);
 
   useEffect(() => {
-    // Load exercises from local storage
+    // Load exercises and workouts from local storage
     let exercisesString = localStorage.getItem('exercises');
     let savedExercises: any[];
     if (exercisesString === null) {
       savedExercises = [];
-    }
-    else {
+    } else {
       savedExercises = JSON.parse(exercisesString);
     }
     setExercises(savedExercises);
+
+    let workoutsString = localStorage.getItem('workouts');
+    let savedWorkouts: Workout[];
+    if (workoutsString === null) {
+      savedWorkouts = [{ date: today(), exercises: [] }];
+    } else {
+      savedWorkouts = JSON.parse(workoutsString);
+    }
+    setWorkouts(savedWorkouts);
   }, []); // Only run this effect once, on mount
 
   // Define setExercises function that also saves to local storage
@@ -27,17 +45,36 @@ function App() {
     localStorage.setItem('exercises', JSON.stringify(newExercises));
   }
 
+  // Define setWorkouts function that also saves to local storage
+  function setWorkouts(newWorkouts: Workout[]) {
+    setWorkouts_(newWorkouts);
+    localStorage.setItem('workouts', JSON.stringify(newWorkouts));
+  }
+
+  function setTodaysWorkout(todaysSets: Sets[]) {
+    if (today() === workouts.slice(-1)[0].date) {
+      const newWorkouts = [...workouts];
+      newWorkouts[newWorkouts.length - 1] = { date: today(), exercises: todaysSets };
+      setWorkouts(newWorkouts);
+    }
+    else {
+      const newWorkouts = [...workouts, { date: today(), exercises: todaysSets }];
+      setWorkouts(newWorkouts);
+    }
+  }
+
   return (
     <div className="App">
-      <MainSection selectedContent={selectedContent} exercises={exercises} setExercises={setExercises} />
+      <MainSection selectedContent={selectedContent} exercises={exercises} setExercises={setExercises} workouts={workouts} setTodaysWorkout={setTodaysWorkout} />
       <BottomBar selectedContent={selectedContent} setSelectedContent={setSelectedContent} />
     </div>
   );
 }
 
-function MainSection({ selectedContent, exercises, setExercises }: { selectedContent: string, exercises: any[], setExercises: any }) {
+function MainSection({ selectedContent, exercises, setExercises, workouts, setTodaysWorkout }: { selectedContent: string, exercises: Exercise[], setExercises: any, workouts: Workout[], setTodaysWorkout: any }) {
   if (selectedContent === 'Current Workout') {
-    return <CurrentWorkout />;
+    // TODO: make sure the date is correct
+    return <CurrentWorkout exercises={exercises} currentWorkout={workouts.slice(-1)[0]} setTodaysWorkout={setTodaysWorkout} />;
   }
   else if (selectedContent === 'Workout History') {
     return <WorkoutHistory />;
@@ -74,12 +111,6 @@ function BottomBarButton({ selectedContent, setSelectedContent, content }: { sel
   }
 }
 
-function CurrentWorkout() {
-  return (
-    <div className="CurrentWorkout">Current Workout</div>
-  );
-}
-
 function WorkoutHistory() {
   return (
     <div className="WorkoutHistory">Workout History</div>
@@ -93,3 +124,5 @@ function Error() {
 }
 
 export default App;
+export { today };
+export type { Exercise, Workout, Sets };

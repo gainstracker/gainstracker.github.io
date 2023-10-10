@@ -1,4 +1,6 @@
-function Exercises({ exercises, setExercises }: { exercises: any[], setExercises: any }) {
+import { Exercise } from "./App";
+
+function Exercises({ exercises, setExercises }: { exercises: Exercise[], setExercises: any }) {
 
   function addExercise() {
     const newExercises = [...exercises, { name: "New Exercise", unit: "reps" }];
@@ -20,7 +22,6 @@ function Exercises({ exercises, setExercises }: { exercises: any[], setExercises
   function updateExerciseUnit(index: number, unit: string) {
     const newExercises = [...exercises];
     newExercises[index].unit = unit;
-    console.log(newExercises);
     setExercises(newExercises);
   }
 
