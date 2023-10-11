@@ -84,3 +84,24 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+.Exercise-List {
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.Workout-Exercise-Name {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: max-content;
+}
+
+.Exercise-Value {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 45px;
+}

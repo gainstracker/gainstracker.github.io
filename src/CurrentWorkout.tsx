@@ -15,6 +15,16 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
         setTodaysWorkout(newExercises);
     }
 
+    function updateSet(setsIndex: number, setIndex: number, value: number) {
+        console.log("updateSet", setsIndex, setIndex, value);
+        const newExercises = [...currentWorkout.exercises];
+        if (newExercises[setsIndex].values.length - 1 === setIndex && value !== 0) {
+            newExercises[setsIndex].values.push(0);
+        }
+        newExercises[setsIndex].values[setIndex] = value;
+        setTodaysWorkout(newExercises);
+    }
+
     console.log("currentWorkout", currentWorkout.exercises);
 
     return (
@@ -23,16 +33,25 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
                 {currentWorkout.exercises.map((exercise, index) => {
                     return (
                         <div className="Exercise-Item" key={index}>
-                            <select className="Exercise-Name" onChange={(event) => console.log("updateExerciseName", index, event.target.value)}>
+                            <select className="Workout-Exercise-Name" onChange={(event) => console.log("updateExerciseName", index, event.target.value)}>
                                 {exercises.map((exercise, index) => { return <option key={index}>{exercise.name}</option> })}
                             </select>
-                            <input type="number" className="Exercise-Value" onChange={(event) => console.log("updateExerciseValue", index, event.target.value)} />
+                            <div className="Workout-Exercise-Unit">{exercise.exercise.unit}</div>
+                            {
+                                exercise.values.map((value, setIndex) => {
+                                    return (
+                                        <div key={setIndex}>
+                                            <input type="number" value={value} className="Exercise-Value" onChange={(event) => { updateSet(index, setIndex, +event.target.value) }} />
+                                        </div>
+                                    );
+                                })
+                            }
                             <div className="Exercise-Delete" onClick={() => deleteExercise(index)}>X</div>
                         </div>
                     );
                 })}
             </div>
-            <div className="Add-Exercise-Button" onClick={addExercise}>Add Exercise</div>
+            <div className="AddExercise-Button" onClick={addExercise}>Add Exercise</div>
         </div>
     );
 }
