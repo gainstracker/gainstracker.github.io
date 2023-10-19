@@ -9,6 +9,14 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
         setTodaysWorkout(newExercises);
     }
 
+    function switchExercises(index1: number, index2: number) {
+        const newExercises = [...currentWorkout.exercises];
+        const temp = newExercises[index1];
+        newExercises[index1] = newExercises[index2];
+        newExercises[index2] = temp;
+        setTodaysWorkout(newExercises);
+    }
+
     function deleteExercise(index: number) {
         const newExercises = [...currentWorkout.exercises];
         newExercises.splice(index, 1);
@@ -16,7 +24,7 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
     }
 
     function updateSet(setsIndex: number, setIndex: number, value: number) {
-        console.log("updateSet", setsIndex, setIndex, value);
+        //console.log("updateSet", setsIndex, setIndex, value);
         const newExercises = [...currentWorkout.exercises];
         if (newExercises[setsIndex].values.length - 1 === setIndex && value !== 0) {
             newExercises[setsIndex].values.push(0);
@@ -25,7 +33,7 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
         setTodaysWorkout(newExercises);
     }
 
-    console.log("currentWorkout", currentWorkout.exercises);
+    //console.log("currentWorkout", currentWorkout.exercises);
 
     return (
         <div className="Current-Workout">
@@ -46,6 +54,8 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
                                     );
                                 })
                             }
+                            {(index !== 0) ? <div className="Exercise-Move" onClick={() => switchExercises(index - 1, index)}>Up</div> : null}
+                            {(index !== currentWorkout.exercises.length - 1) ? <div className="Exercise-Move" onClick={() => switchExercises(index, index + 1)}>Down</div> : null}
                             <div className="Exercise-Delete" onClick={() => deleteExercise(index)}>X</div>
                         </div>
                     );

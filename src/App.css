@@ -92,6 +92,29 @@ body {
   align-items: left;
 }
 
+.Workout-Exercise-Unit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Exercise-Move {
+  position: relative;
+  right: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: fit-content;
+  height: 50px;
+  background-color: #26bd2b;
+  color: #ffffff;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .Workout-Exercise-Name {
   justify-content: center;
   align-items: center;
