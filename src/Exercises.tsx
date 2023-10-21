@@ -3,7 +3,7 @@ import { Exercise } from "./App";
 function Exercises({ exercises, setExercises }: { exercises: Exercise[], setExercises: any }) {
 
   function addExercise() {
-    const newExercises = [...exercises, { name: "New Exercise", unit: "reps" }];
+    const newExercises = [...exercises, { name: "New Exercise", units: [] }];
     setExercises(newExercises);
   }
 
@@ -19,12 +19,23 @@ function Exercises({ exercises, setExercises }: { exercises: Exercise[], setExer
     setExercises(newExercises);
   }
 
-  function updateExerciseUnit(index: number, unit: string) {
+  function updateExerciseUnit(index: number, unitIndex: number, unit: string) {
+    const newUnits = [...exercises[index].units];
     const newExercises = [...exercises];
-    newExercises[index].unit = unit;
+    newUnits[unitIndex] = unit;
+    newExercises[index].units = newUnits;
     setExercises(newExercises);
   }
 
+  function addExerciseUnit(index: number, unit: string) {
+    console.log("addExerciseUnit", index, unit);
+    if (unit !== "None") {
+      const newUnits = [...exercises[index].units, unit];
+      const newExercises = [...exercises];
+      newExercises[index].units = newUnits;
+      setExercises(newExercises);
+    }
+  }
 
   return (
     <div className="Exercises">
@@ -33,9 +44,20 @@ function Exercises({ exercises, setExercises }: { exercises: Exercise[], setExer
           return (
             <div className="Exercise-Item" key={index}>
               <input type="text" className="Exercise-Name" value={exercise.name} onChange={(event) => updateExerciseName(index, event.target.value)} />
-              <select className="Exercise-Unit" onChange={(event) => updateExerciseUnit(index, event.target.value)}>
-                <option value="reps">reps</option>
-                <option value="mins">mins</option>
+              {exercise.units.map((unit, unitIndex) => {
+                return <select key={unitIndex} value={unit} className="Exercise-Unit" onChange={(event) => updateExerciseUnit(index, unitIndex, event.target.value)}>
+                  <option value="Reps">Reps</option>
+                  <option value="kg">kg</option>
+                  <option value="Mins">Mins</option>
+                  <option value="Steps per Min">Steps per Min</option>
+                </select>
+              })}
+              <select key="end" value="None" className="Exercise-Unit" onChange={(event) => addExerciseUnit(index, event.target.value)}>
+                <option value="None">None</option>
+                <option value="Reps">Reps</option>
+                <option value="kg">kg</option>
+                <option value="Mins">Mins</option>
+                <option value="Steps per Min">Steps per Min</option>
               </select>
               <div className="Exercise-Delete" onClick={() => deleteExercise(index)}>X</div>
             </div>

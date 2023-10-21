@@ -10,12 +10,12 @@ function today() {
 }
 
 type Workout = { date: string, exercises: Sets[] };
-type Sets = { exercise: Exercise, values: number[] };
-type Exercise = { name: string, unit: string };
+type Sets = { exercise: Exercise, values: number[][] };
+type Exercise = { name: string, units: string[] };
 
 function App() {
   const [selectedContent, setSelectedContent] = useState('Current Workout');
-  const [exercises, setExercises_] = useState([{ name: "New Exercise", unit: "reps" }]);
+  const [exercises, setExercises_] = useState([{ name: "New Exercise", units: [] }]);
   const [workouts, setWorkouts_] = useState<Workout[]>([{ date: today(), exercises: [] }]);
 
   useEffect(() => {

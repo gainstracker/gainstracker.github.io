@@ -5,7 +5,16 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
     function addExercise() {
         //console.log("addExercise");
         //TODO check
-        const newExercises = [...currentWorkout.exercises, { exercise: exercises[0], values: [0] }];
+        if (exercises !== undefined && exercises.length > 0) {
+            const newExercises = [...currentWorkout.exercises, { exercise: exercises[0], values: [[0]] }];
+            setTodaysWorkout(newExercises);
+        }
+    }
+
+    function updateExercise(index: number, exercise: Exercise | undefined) {
+        if (exercise === undefined) { return; }
+        const newExercises = [...currentWorkout.exercises];
+        newExercises[index].exercise = exercise;
         setTodaysWorkout(newExercises);
     }
 
@@ -23,17 +32,21 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
         setTodaysWorkout(newExercises);
     }
 
-    function updateSet(setsIndex: number, setIndex: number, value: number) {
+    function updateSet(setsIndex: number, setIndex: number, mesurementIndex: number, value: number) {
         //console.log("updateSet", setsIndex, setIndex, value);
         const newExercises = [...currentWorkout.exercises];
         if (newExercises[setsIndex].values.length - 1 === setIndex && value !== 0) {
-            newExercises[setsIndex].values.push(0);
+            var measurements = [];
+            for (var i = 0; i < newExercises[setsIndex].exercise.units.length; i++) {
+                measurements.push(0);
+            }
+            newExercises[setsIndex].values.push(measurements);
         }
-        newExercises[setsIndex].values[setIndex] = value;
+        newExercises[setsIndex].values[setIndex][mesurementIndex] = value;
         setTodaysWorkout(newExercises);
     }
 
-    //console.log("currentWorkout", currentWorkout.exercises);
+    if (currentWorkout.exercises.length > 0) { console.log("currentWorkout", currentWorkout.exercises[0].values) }
 
     return (
         <div className="Current-Workout">
@@ -41,17 +54,17 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
                 {currentWorkout.exercises.map((exercise, index) => {
                     return (
                         <div className="Exercise-Item" key={index}>
-                            <select className="Workout-Exercise-Name" onChange={(event) => console.log("updateExerciseName", index, event.target.value)}>
+
+                            <select className="Workout-Exercise-Name" onChange={(event) => updateExercise(index, exercises.find((exercise) => exercise.name === event.target.value))}>
                                 {exercises.map((exercise, index) => { return <option key={index}>{exercise.name}</option> })}
                             </select>
-                            <div className="Workout-Exercise-Unit">{exercise.exercise.unit}</div>
                             {
-                                exercise.values.map((value, setIndex) => {
-                                    return (
-                                        <div key={setIndex}>
-                                            <input type="number" value={value} className="Exercise-Value" onChange={(event) => { updateSet(index, setIndex, +event.target.value) }} />
-                                        </div>
-                                    );
+                                exercise.values.map((set, setIndex) => {
+                                    return exercise.exercise.units.map((unit, unitIndex) => {
+                                        return [<div className="Workout-Exercise-Unit">{unit}</div>,
+                                        <input type="number" value={exercise.values[setIndex][unitIndex] === undefined ? 0 : exercise.values[setIndex][unitIndex]} className="Exercise-Value" onChange={(event) => { updateSet(index, setIndex, unitIndex, +event.target.value) }} />
+                                        ]
+                                    })
                                 })
                             }
                             {(index !== 0) ? <div className="Exercise-Move" onClick={() => switchExercises(index - 1, index)}>Up</div> : null}
