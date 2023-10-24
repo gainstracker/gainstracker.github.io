@@ -1,5 +1,5 @@
 //import { today } from './App'
-import type { Exercise, Workout, Sets } from './App'
+import type { Exercise, Workout } from './App'
 
 function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exercises: Exercise[], currentWorkout: Workout, setTodaysWorkout: any }) {
     function addExercise() {
@@ -46,7 +46,7 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
         setTodaysWorkout(newExercises);
     }
 
-    if (currentWorkout.exercises.length > 0) { console.log("currentWorkout", currentWorkout.exercises[0].values) }
+    //if (currentWorkout.exercises.length > 0) { console.log("currentWorkout", currentWorkout.exercises[0].values) }
 
     return (
         <div className="Current-Workout">
@@ -55,14 +55,14 @@ function CurrentWorkout({ exercises, currentWorkout, setTodaysWorkout }: { exerc
                     return (
                         <div className="Exercise-Item" key={index}>
 
-                            <select className="Workout-Exercise-Name" onChange={(event) => updateExercise(index, exercises.find((exercise) => exercise.name === event.target.value))}>
-                                {exercises.map((exercise, index) => { return <option key={index}>{exercise.name}</option> })}
+                            <select className="Workout-Exercise-Name" value={exercise.exercise.name} onChange={(event) => updateExercise(index, exercises.find((exercise) => exercise.name === event.target.value))}>
+                                {exercises.map((exercise, index) => { return <option value={exercise.name}>{exercise.name}</option> })}
                             </select>
                             {
                                 exercise.values.map((set, setIndex) => {
                                     return exercise.exercise.units.map((unit, unitIndex) => {
                                         return [<div className="Workout-Exercise-Unit">{unit}</div>,
-                                        <input type="number" value={exercise.values[setIndex][unitIndex] === undefined ? 0 : exercise.values[setIndex][unitIndex]} className="Exercise-Value" onChange={(event) => { updateSet(index, setIndex, unitIndex, +event.target.value) }} />
+                                        <input type="number" value={exercise.values[setIndex][unitIndex]} className="Exercise-Value" onChange={(event) => { updateSet(index, setIndex, unitIndex, +event.target.value) }} />
                                         ]
                                     })
                                 })

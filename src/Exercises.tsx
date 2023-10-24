@@ -49,7 +49,7 @@ function Exercises({ exercises, setExercises }: { exercises: Exercise[], setExer
                   <option value="Reps">Reps</option>
                   <option value="kg">kg</option>
                   <option value="Mins">Mins</option>
-                  <option value="Steps per Min">Steps per Min</option>
+                  <option value="Steps">Steps</option>
                 </select>
               })}
               <select key="end" value="None" className="Exercise-Unit" onChange={(event) => addExerciseUnit(index, event.target.value)}>
@@ -57,7 +57,7 @@ function Exercises({ exercises, setExercises }: { exercises: Exercise[], setExer
                 <option value="Reps">Reps</option>
                 <option value="kg">kg</option>
                 <option value="Mins">Mins</option>
-                <option value="Steps per Min">Steps per Min</option>
+                <option value="Steps">Steps</option>
               </select>
               <div className="Exercise-Delete" onClick={() => deleteExercise(index)}>X</div>
             </div>
