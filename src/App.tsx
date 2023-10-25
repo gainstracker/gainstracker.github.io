@@ -35,6 +35,11 @@ function App() {
       savedWorkouts = [{ date: today(), exercises: [] }];
     } else {
       savedWorkouts = JSON.parse(workoutsString);
+      if (savedWorkouts.length === 0) {
+        savedWorkouts = [{ date: today(), exercises: [] }];
+      } else if (savedWorkouts.slice(-1)[0].date !== today()) {
+        savedWorkouts.push({ date: today(), exercises: [] });
+      }
     }
     setWorkouts(savedWorkouts);
   }, []); // Only run this effect once, on mount
@@ -52,6 +57,8 @@ function App() {
   }
 
   function setTodaysWorkout(todaysSets: Sets[]) {
+    console.log("setTodaysWorkout", todaysSets);
+    console.log("workouts", workouts);
     if (today() === workouts.slice(-1)[0].date) {
       const newWorkouts = [...workouts];
       newWorkouts[newWorkouts.length - 1] = { date: today(), exercises: todaysSets };
