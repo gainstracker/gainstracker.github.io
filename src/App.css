@@ -130,3 +130,11 @@ body {
   display: flex;
   height: 45px;
 }
+
+.Workout-Date {
+  text-align: left;
+}
+
+.Workout-Exercises {
+  text-align: left;
+}

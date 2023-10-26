@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Exercises from './Exercises';
 import CurrentWorkout from './CurrentWorkout';
+import WorkoutHistory from './WorkoutHistory';
 import './App.css';
 
 function today() {
@@ -57,8 +58,8 @@ function App() {
   }
 
   function setTodaysWorkout(todaysSets: Sets[]) {
-    console.log("setTodaysWorkout", todaysSets);
-    console.log("workouts", workouts);
+    //console.log("setTodaysWorkout", todaysSets);
+    //console.log("workouts", workouts);
     if (today() === workouts.slice(-1)[0].date) {
       const newWorkouts = [...workouts];
       newWorkouts[newWorkouts.length - 1] = { date: today(), exercises: todaysSets };
@@ -84,7 +85,7 @@ function MainSection({ selectedContent, exercises, setExercises, workouts, setTo
     return <CurrentWorkout exercises={exercises} currentWorkout={workouts.slice(-1)[0]} setTodaysWorkout={setTodaysWorkout} />;
   }
   else if (selectedContent === 'Workout History') {
-    return <WorkoutHistory />;
+    return <WorkoutHistory workouts={workouts} />;
   }
   else if (selectedContent === 'Exercises') {
     return <Exercises exercises={exercises} setExercises={setExercises} />;
@@ -116,12 +117,6 @@ function BottomBarButton({ selectedContent, setSelectedContent, content }: { sel
       <div className="BottomBar-Button" onClick={() => setSelectedContent(content)}>{content}</div>
     );
   }
-}
-
-function WorkoutHistory() {
-  return (
-    <div className="WorkoutHistory">Workout History</div>
-  );
 }
 
 function Error() {
