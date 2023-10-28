@@ -17,18 +17,18 @@ function SingleWorkout({ workout }: { workout: Workout }) {
         <div className="Workout-Date">{workout.date}</div>
         <div className="Workout-Exercises">
             {workout.exercises.map((exercise, index) => {
-                return (<span className="Workout-Exercise" key={index}>
+                return (<div className="Workout-Exercise" key={index}>
                     {exercise.exercise.name}:&nbsp;
                     <span className="Workout-Exercise-Sets">
                         {exercise.values.map((set, index) => {
                             return (<span className="Workout-Exercise-Set" key={index}>
                                 {set.map((measurement, index) => {
                                     return (<span className="Workout-Exercise-Measurement" key={index}>{measurement} {exercise.exercise.units[index]}</span>);
-                                })},
+                                })},&nbsp;
                             </span>);
                         })}
                     </span>
-                </span>);
+                </div>);
             })}
         </div>
     </div>);
