@@ -23,8 +23,8 @@ function SingleWorkout({ workout }: { workout: Workout }) {
                         {exercise.values.map((set, index) => {
                             return (<span className="Workout-Exercise-Set" key={index}>
                                 {set.map((measurement, index) => {
-                                    return (<span className="Workout-Exercise-Measurement" key={index}>{measurement} {exercise.exercise.units[index]}</span>);
-                                })},&nbsp;
+                                    return (<span className="Workout-Exercise-Measurement" key={index}>{measurement} {exercise.exercise.units[index]}&nbsp;</span>);
+                                })},
                             </span>);
                         })}
                     </span>
