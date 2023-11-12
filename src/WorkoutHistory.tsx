@@ -4,7 +4,7 @@ function WorkoutHistory({ workouts }: { workouts: Workout[] }) {
     return (
         <div className="WorkoutHistory">
             {
-                workouts.filter((workout) => workout.exercises.length > 0).map((workout, index) => {
+                workouts.filter((workout) => workout.exercises.length > 0).reverse().map((workout, index) => {
                     return (<SingleWorkout workout={workout} key={index} />);
                 })
             }

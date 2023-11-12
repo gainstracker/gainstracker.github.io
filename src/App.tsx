@@ -5,9 +5,11 @@ import CurrentWorkout from './CurrentWorkout';
 import WorkoutHistory from './WorkoutHistory';
 import './App.css';
 
+const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 function today() {
   let date = new Date();
-  return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  return weekday[date.getDay()] + ' ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 }
 
 type Workout = { date: string, exercises: Sets[] };
